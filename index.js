@@ -25,6 +25,7 @@ function lista() {
             } else if (propriedade === 'Ver propriedades') {
                 verProp()
             } else if (propriedade === 'Sair') {
+                verProp()
                 console.log(chalk.bgBlue.black('Até a proxima!'))
                 
             }
@@ -32,7 +33,7 @@ function lista() {
         .catch((err) => console.log(err))
 }
 
-/* adicionando as propriedades ao json, usei o appendFile do js pra isso */
+
 
 function creatProp() {
     inquirer.prompt([
@@ -43,17 +44,14 @@ function creatProp() {
     ])
         .then((resposta) => {
 
-            const resp = resposta['prop']
-            
+            const resp = resposta['prop'];
             while (resp != 'sair'){
-            fs.appendFile(
-                'propriedades.json',
-                `${resp}:,
-`,
-                function (err) {
-                    console.log(err)
-                },
-            )
+                
+                fs.appendFile("propriedades.txt", `"${resp}":
+`,  (err) => {
+    
+                    if (err) throw err;  
+                });
             return creatProp() 
         } 
          verProp()
@@ -64,10 +62,13 @@ function creatProp() {
 
 
 function verProp(){
- const json = fs.readFileSync('./propriedades.json', 
-        {encoding:'utf8', flag:'r'},
-        );
- const ver = JSON.stringify(json);
- console.log(ver)
+    fs.readFile('propriedades.txt', 'utf8' , (err, data) => {
+        if (err) {
+          console.error(err)
+          return
+        }
+        console.log(data)
+      })
 
+ 
 } 
